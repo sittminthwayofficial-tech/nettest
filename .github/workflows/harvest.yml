@@ -1,0 +1,63 @@
+name: Harvest VPN feed
+
+# Every 3 hours (minute 17, off the top-of-hour rush) + manual runs.
+# Node survival is ~31%/day, so this refresh cadence IS the product.
+on:
+  schedule:
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+    inputs:
+      core_limit:
+        description: "Max nodes to core-test this run"
+        required: false
+        default: "800"
+
+# The job commits feed/ back to the repo with the built-in token.
+permissions:
+  contents: write
+
+# Never let two harvests run at once (they would fight over the push).
+concurrency:
+  group: harvest
+  cancel-in-progress: false
+
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      SINGBOX_VERSION: "1.12.12"
+      CORE_LIMIT: ${{ github.event.inputs.core_limit || '800' }}
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download sing-box (pinned)
+        run: |
+          curl -fsSL -o sb.tar.gz "https://github.com/SagerNet/sing-box/releases/download/v${SINGBOX_VERSION}/sing-box-${SINGBOX_VERSION}-linux-amd64.tar.gz"
+          tar -xzf sb.tar.gz
+          cp "sing-box-${SINGBOX_VERSION}-linux-amd64/sing-box" ./sing-box
+          chmod +x ./sing-box
+          ./sing-box version
+
+      - name: Run harvester
+        env:
+          SINGBOX: ./sing-box
+        run: python harvester.py --core-limit "$CORE_LIMIT" --speed --speed-cap 60
+
+      - name: Commit feed (only if changed)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add feed/
+          if git diff --cached --quiet; then
+            echo "Feed unchanged — nothing to commit."
+          else
+            git commit -m "feed: harvest $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push
+          fi
