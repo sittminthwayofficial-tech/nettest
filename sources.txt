@@ -1,0 +1,54 @@
+# VPN Harvester sources — ORDER IS PRIORITY.
+# Core tests (the slow, valuable stage) run in this file's order:
+# curated first, tested-only next, then crawlers, then the mega-pools.
+# One URL per line. Lines starting with # are comments. Edit freely on GitHub.
+# Counts below are from the 2026-11-04 firsthand audit (format-valid unique).
+
+# ===== Priority 1 — curated (best measured yield: 34% of core-tested passed) =====
+# peasoft/NoMoreWalls — hand-curated, modern protocols; the proven backbone.
+https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list.txt
+
+# ===== Priority 2 — tested-only publishers (they probe before publishing) =====
+# nyeinkokoaung404 — XRAY-tested-only file (147 unique at audit; repo updated daily).
+https://raw.githubusercontent.com/nyeinkokoaung404/V2ray-Configs/main/configs/proxy_configs_tested.txt
+# sorenadev-dev v2rayCollector — sing-box TCP-tested, Cloudzy slice (3,537 unique).
+https://raw.githubusercontent.com/sorenadev-dev/v2rayCollector/refs/heads/main/sub/tcp-cloudzy.txt
+
+# ===== Priority 3 — Telegram crawler aggregator (fresh, ~30-min update cycle) =====
+# Alirewa V2ray-Configs — crawls 180+ Telegram channels (1,926 unique).
+https://raw.githubusercontent.com/Alirewa/V2ray-Configs/main/config.txt
+
+# ===== Priority 4 — v2nodes per-country subs (origin of the most durable nodes; SEA first) =====
+https://www.v2nodes.com/subscriptions/country/sg/?key=693C42C2E9D061E
+https://www.v2nodes.com/subscriptions/country/th/?key=693C42C2E9D061E
+https://www.v2nodes.com/subscriptions/country/my/?key=693C42C2E9D061E
+https://www.v2nodes.com/subscriptions/country/hk/?key=693C42C2E9D061E
+https://www.v2nodes.com/subscriptions/country/jp/?key=693C42C2E9D061E
+https://www.v2nodes.com/subscriptions/country/all/?key=693C42C2E9D061E
+
+# ===== Priority 5 — Cloudflare-fronted / free-hosting-only collector =====
+# collector-UI — only CF Pages/Workers / Vercel-style fronted configs (5,369 unique).
+https://raw.githubusercontent.com/alirezauser67-coder/collector-UI/refs/heads/main/configs.txt
+# Pawdroid Cloudflare fallback mirror (small, vless/hy2).
+https://sub.shadowsharing.com/static/sub_en
+
+# ===== Priority 6 — mega-pools and freshness sources (only if test budget remains) =====
+# kort0881 — VLESS-only mirror of TG @vlesstrojan (14,091 unique; volume, low hit rate).
+https://raw.githubusercontent.com/kort0881/vpn-vless-configs-russia/main/output/vless.txt
+# mahdibland V2RayAggregator merged pool (40 working on 2026-11-03 run).
+https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt
+# MatinGhanbari all_sub pool.
+https://raw.githubusercontent.com/MatinGhanbari/v2ray-configs/main/subscriptions/v2ray/all_sub.txt
+# Pawdroid free servers.
+https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub
+# nyeinkokoaung404 general pool (vmess-heavy, 463 unique).
+https://raw.githubusercontent.com/nyeinkokoaung404/V2ray-Configs/main/Sub1.txt
+# Au1rxx — claims hourly sing-box-verified (stale at audit: last commit 2026-10-30; kept, low).
+https://github.com/Au1rxx/free-vpn-subscriptions/raw/main/output/v2ray-base64.txt
+# EbraSha list via live fork, mixed chunk 001 (only ~13% pass format validation).
+https://raw.githubusercontent.com/aqrti201990/free-v2ray-public-list/refs/heads/main/mixed-protocol-chunks/EbraSha-Mixed-Config-001.txt
+# Telegram public previews — tiny but freshest yield (tester extracts links from the page).
+https://t.me/s/v2nodes
+https://t.me/s/PrivateVPNs
+https://t.me/s/abc_vpn_configs
+https://t.me/s/VlessVpnFree
