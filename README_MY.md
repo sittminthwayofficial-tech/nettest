@@ -63,6 +63,25 @@ https://raw.githubusercontent.com/<မင်း GitHub နာမည်>/<repo �
 5. node တစ်ခုရွေး → အောက်က ▶ နဲ့ connect။ **ချိတ်တဲ့ node တိုင်းကို သုံးခါနီး ဖုန်းကပဲ
    ပြန် စစ် သလို ရွေး** — အောက်က "ရိုးရိုးသတိ" ကို ဖတ်။
 
+### v2rayNG သုံးရင် ဒီ link ကို သုံး (အရေးကြီး)
+
+feed ထဲမှာ subscription link ၂ မျိုး ထွက်တယ်:
+
+- **v2rayNG သုံးသူတွေ:** `working_xray.b64` ကို ထည့် —
+  `https://raw.githubusercontent.com/sittminthwayofficial-tech/nettest/main/feed/working_xray.b64`
+  node အစုံက အတူတူပဲ၊ ဒါပေမယ့် vless link တချို့မှာပါတဲ့ `encryption=` အမျိုးအစား
+  အသစ် (v2rayNG က ဖွင့်မရဘူး — "unknown field "encryption"" ဆိုတဲ့ error တက်တယ်)
+  ကိုပဲ ဖယ်ထားတာ။
+- **Hiddify / sing-box သုံးသူတွေ:** မူရင်း `working.b64` ကိုပဲ သုံး —
+  `https://raw.githubusercontent.com/sittminthwayofficial-tech/nettest/main/feed/working.b64`
+  (node အကုန် အပြည့် ပါတယ်၊ ဘာမှ မဖယ်ထားဘူး)
+
+### node နာမည်တွေ
+
+feed ထဲက node နာမည်အားလုံးကို ပုံစံတူ ပြန်ရေးထားတယ်: `နံပါတ် · နိုင်ငံ · protocol`
+(ဥပမာ `03 · 🇯🇵 Japan · VLESS`)။ စာရင်းက အကောင်းဆုံး အစဉ်နဲ့ စီပြီးသား —
+လိုချင်တဲ့ နိုင်ငံ ကြည့်ပြီး ရွေး၊ ပြီးရင် ဖုန်းက ping အနည်းဆုံး node ကိုပဲ ဆက်။
+
 ## ရိုးရိုး သတိ (ဒါတွေ မဖြစ်မနေ သိထား)
 
 - **စမ်းတဲ့ နေရာက GitHub server (အမေရိကန်/ဥရောပ)၊ မင်း ဖုန်းက မြန်မာ။** feed ထဲ ပါတဲ့
