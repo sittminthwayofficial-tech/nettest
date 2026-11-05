@@ -14,8 +14,12 @@ Phase 0 script):
   5. SPEED    optional: download-speed sample on the top --speed-cap working
               nodes by proxy latency only (bounds runtime).
   6. PUBLISH  feed/working.txt + feed/working.b64 (subscription format),
-              feed/stats.json, and one appended row in feed/history.csv
-              (the per-cycle yield record).
+              plus feed/working_xray.txt/.b64 — the same set minus the
+              vless links Xray-core clients (v2rayNG) reject — feed/
+              stats.json, and one appended row in feed/history.csv
+              (the per-cycle yield record). Every published node is
+              renamed to "NN · <flag> <Country> · <PROTOCOL>" so the
+              list is readable; connection data is never touched.
 
 Why priority order matters (measured in Phase 0): curated sources pass the
 core test ~5x more often than raw mega-pools (NoMoreWalls 34% vs mega-pool
@@ -188,19 +192,123 @@ def speed_wave(working, core_bin, cap):
             n["mbps"] = 0
 
 # ---------------------------------------------------------------- outputs
+def xray_safe(link, protocol):
+    """False only for the one link class Xray-core clients (v2rayNG) reject
+    at config validation: a vless:// link whose query carries an
+    `encryption` param with a value other than "none" (the new VLESS
+    encryption feature, e.g. mlkem768x25519plus...). Xray's decoder fails
+    with: outbounds[N].encryption: json: unknown field "encryption".
+    sing-box accepts these links, so they stay in working.txt; the
+    working_xray feed simply omits them. Absent param = safe; every other
+    protocol passes through untouched."""
+    if (protocol or "").lower() != "vless":
+        return True
+    try:
+        pairs = urllib.parse.parse_qsl(urllib.parse.urlsplit(link).query,
+                                       keep_blank_values=True)
+    except Exception:
+        return True
+    for k, v in pairs:
+        if k.lower() == "encryption" and v.strip().lower() != "none":
+            return False
+    return True
+
+# ------------------------------------------------------------ node renaming
+# Published remarks in the wild are unreadable (bare flags, hostnames,
+# "@channel #7"). At publish time every node's DISPLAY NAME is rewritten to
+#   "NN · <flag> <Country> · <PROTOCOL>"
+# where NN is the node's position in the best-first ranking. Only name
+# bytes change — the fragment of share links, the "ps" field inside vmess
+# JSON — never any connection data. Latency/speed stay OUT of the name:
+# they are measured from the runner and would mislead users elsewhere;
+# rank order already encodes quality.
+COUNTRY_NAMES = {
+    "NL": "Netherlands", "US": "United States", "CA": "Canada",
+    "JP": "Japan", "SE": "Sweden", "DE": "Germany", "HK": "Hong Kong",
+    "IT": "Italy", "FR": "France", "CH": "Switzerland", "SG": "Singapore",
+    "UA": "Ukraine", "PL": "Poland", "AE": "UAE", "IN": "India",
+    "KR": "South Korea", "GB": "United Kingdom", "RU": "Russia",
+    "AU": "Australia", "VN": "Vietnam", "TR": "Turkey", "ES": "Spain",
+    "AT": "Austria", "CL": "Chile", "EE": "Estonia", "FI": "Finland",
+    "IL": "Israel", "ZA": "South Africa", "TH": "Thailand",
+    "MY": "Malaysia", "ID": "Indonesia", "PH": "Philippines",
+    "KH": "Cambodia", "LA": "Laos", "MM": "Myanmar", "BN": "Brunei",
+    "TW": "Taiwan", "CN": "China", "KZ": "Kazakhstan", "UZ": "Uzbekistan",
+    "AM": "Armenia", "AZ": "Azerbaijan", "IR": "Iran", "BR": "Brazil",
+    "AR": "Argentina",
+}
+_PROTO_LABEL = {"vless": "VLESS", "vmess": "VMESS", "trojan": "TROJAN",
+                "ss": "SS", "hysteria2": "HY2", "tuic": "TUIC"}
+
+def _flag_of(cc):
+    return "".join(chr(0x1F1E6 + ord(c) - ord("A")) for c in cc)
+
+def display_name(rank, width, cc, protocol):
+    label = _PROTO_LABEL.get((protocol or "").lower(),
+                             (protocol or "?").upper())
+    if cc and cc in COUNTRY_NAMES:
+        place = f"{_flag_of(cc)} {COUNTRY_NAMES[cc]}"
+    elif cc:
+        place = f"{_flag_of(cc)} {cc}"
+    else:
+        place = "🌐 Unknown"
+    return f"{rank:0{width}d} · {place} · {label}"
+
+def rename_link(link, protocol, new_name):
+    """Return `link` with only its display name replaced by `new_name`.
+    Share links (vless/trojan/ss/hysteria2/tuic): the name is the
+    #fragment. vmess: the name is the "ps" field inside the base64 JSON —
+    decode, set ps, re-encode as standard base64 of the compact JSON,
+    keeping every other field's value exactly as parsed. Any failure
+    returns the original link unchanged."""
+    try:
+        if (protocol or "").lower() == "vmess":
+            head, mark, frag = link.partition("#")
+            data = json.loads(core.b64decode_loose(head.split("://", 1)[1]))
+            data["ps"] = new_name
+            blob = base64.b64encode(
+                json.dumps(data, ensure_ascii=False,
+                           separators=(",", ":")).encode("utf-8")
+            ).decode("ascii")
+            return "vmess://" + blob + (mark + frag if mark else "")
+        return (link.split("#", 1)[0] + "#"
+                + urllib.parse.quote(new_name, safe=""))
+    except Exception:
+        return link
+
 def write_outputs(outdir, working, meta):
     os.makedirs(outdir, exist_ok=True)
     ranked = sorted(working, key=lambda x: (-(x.get("score_general") or 0),
                                             x.get("proxy_ms") or 99999))
-    txt = "".join(n["raw"] + "\n" for n in ranked)
+    # Country comes from node_country(), which reads the ORIGINAL remark —
+    # resolve it for every node BEFORE renaming anything.
+    cc_of = {id(n): node_country(n) for n in working}
+    # Rename every published node to the standard display name (rank in
+    # the best-first order + country + protocol). pub entries:
+    # (node, display_name, renamed_link); the xray feed is the same
+    # entries minus the Xray-rejected class, ranks unchanged.
+    width = max(2, len(str(len(ranked))))
+    pub, disp_of = [], {}
+    for i, n in enumerate(ranked, 1):
+        disp = display_name(i, width, cc_of[id(n)], n.get("protocol"))
+        disp_of[id(n)] = disp
+        pub.append((n, disp, rename_link(n["raw"], n.get("protocol"), disp)))
+    txt = "".join(link + "\n" for _, _, link in pub)
     with open(os.path.join(outdir, "working.txt"), "w", encoding="utf-8") as f:
         f.write(txt)
     with open(os.path.join(outdir, "working.b64"), "w", encoding="utf-8") as f:
         f.write(base64.b64encode(txt.encode("utf-8")).decode("ascii"))
 
+    xray_pub = [e for e in pub if xray_safe(e[2], e[0].get("protocol"))]
+    xtxt = "".join(link + "\n" for _, _, link in xray_pub)
+    with open(os.path.join(outdir, "working_xray.txt"), "w", encoding="utf-8") as f:
+        f.write(xtxt)
+    with open(os.path.join(outdir, "working_xray.b64"), "w", encoding="utf-8") as f:
+        f.write(base64.b64encode(xtxt.encode("utf-8")).decode("ascii"))
+
     countries, sea_total = {}, 0
     for n in working:
-        cc = node_country(n)
+        cc = cc_of[id(n)]
         if cc:
             countries[cc] = countries.get(cc, 0) + 1
             if cc in SEA_CODES:
@@ -208,12 +316,13 @@ def write_outputs(outdir, working, meta):
     proxy = [n["proxy_ms"] for n in working if n.get("proxy_ms")]
     stats = dict(meta)
     stats.update({
+        "working_xray": len(xray_pub),
         "sea_working": {"total": sea_total,
                         "by_country": dict(sorted(countries.items(),
                                                   key=lambda kv: -kv[1]))},
         "median_proxy_ms": round(statistics.median(proxy), 1) if proxy else None,
-        "top10": [{"protocol": n["protocol"], "name": n.get("name") or n["host"],
-                   "country": node_country(n), "proxy_ms": n.get("proxy_ms"),
+        "top10": [{"protocol": n["protocol"], "name": disp_of[id(n)],
+                   "country": cc_of[id(n)], "proxy_ms": n.get("proxy_ms"),
                    "mbps": n.get("mbps"), "score": n.get("score_general"),
                    "source": n.get("source_name")} for n in ranked[:10]],
     })
@@ -294,7 +403,7 @@ def main():
                                             "fast_lt100ms", "median_proxy_ms")},
                      indent=1))
     print(f"DONE in {meta['elapsed_s']}s -> {args.out}/working.txt, working.b64, "
-          f"stats.json, history.csv")
+          f"working_xray.txt, working_xray.b64, stats.json, history.csv")
 
 if __name__ == "__main__":
     main()
