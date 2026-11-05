@@ -15,8 +15,11 @@ Phase 0 script):
               nodes by proxy latency only (bounds runtime).
   6. PUBLISH  feed/working.txt + feed/working.b64 (subscription format),
               plus feed/working_xray.txt/.b64 — the same set minus the
-              vless links Xray-core clients (v2rayNG) reject — feed/
-              stats.json, and one appended row in feed/history.csv
+              vless links Xray-core clients (v2rayNG) reject — plus
+              feed/working_app.txt/.b64 — the same set minus the vless
+              links whose packetEncoding value sing-box (the NetTest
+              app's core) rejects — feed/stats.json, and one appended
+              row in feed/history.csv
               (the per-cycle yield record). Every published node is
               renamed to "NN · <flag> <Country> · <PROTOCOL>" so the
               list is readable; connection data is never touched.
@@ -213,6 +216,33 @@ def xray_safe(link, protocol):
             return False
     return True
 
+def app_safe(link, protocol):
+    """False only for the one link class sing-box — the NetTest app's
+    core, via Hiddify — rejects when it builds ONE config from the whole
+    subscription: a vless:// link whose query carries a `packetEncoding`
+    param with a value sing-box does not know. sing-box v1.13's vless
+    outbound accepts only "xudp" and "packetaddr" (or the param being
+    absent); any other value (observed in the wild: "none") makes
+    vless.NewOutbound panic with "unknown value", and because the app
+    validates the list as a single config, that one link kills every
+    node — the core never starts. Confirmed on-device 2026-11-05 from
+    the app's own core log (FATAL in protocol/vless.NewOutbound). The
+    links pass the harvester's per-node tests and stay in working.txt;
+    the working_app feed simply omits them. Absent param = safe; every
+    other protocol passes through untouched."""
+    if (protocol or "").lower() != "vless":
+        return True
+    try:
+        pairs = urllib.parse.parse_qsl(urllib.parse.urlsplit(link).query,
+                                       keep_blank_values=True)
+    except Exception:
+        return True
+    for k, v in pairs:
+        if k.lower() == "packetencoding" and \
+                v.strip().lower() not in ("xudp", "packetaddr"):
+            return False
+    return True
+
 # ------------------------------------------------------------ node renaming
 # Published remarks in the wild are unreadable (bare flags, hostnames,
 # "@channel #7"). At publish time every node's DISPLAY NAME is rewritten to
@@ -285,8 +315,8 @@ def write_outputs(outdir, working, meta):
     cc_of = {id(n): node_country(n) for n in working}
     # Rename every published node to the standard display name (rank in
     # the best-first order + country + protocol). pub entries:
-    # (node, display_name, renamed_link); the xray feed is the same
-    # entries minus the Xray-rejected class, ranks unchanged.
+    # (node, display_name, renamed_link); the xray and app feeds are the
+    # same entries minus their rejected classes, ranks unchanged.
     width = max(2, len(str(len(ranked))))
     pub, disp_of = [], {}
     for i, n in enumerate(ranked, 1):
@@ -306,6 +336,13 @@ def write_outputs(outdir, working, meta):
     with open(os.path.join(outdir, "working_xray.b64"), "w", encoding="utf-8") as f:
         f.write(base64.b64encode(xtxt.encode("utf-8")).decode("ascii"))
 
+    app_pub = [e for e in pub if app_safe(e[2], e[0].get("protocol"))]
+    atxt = "".join(link + "\n" for _, _, link in app_pub)
+    with open(os.path.join(outdir, "working_app.txt"), "w", encoding="utf-8") as f:
+        f.write(atxt)
+    with open(os.path.join(outdir, "working_app.b64"), "w", encoding="utf-8") as f:
+        f.write(base64.b64encode(atxt.encode("utf-8")).decode("ascii"))
+
     countries, sea_total = {}, 0
     for n in working:
         cc = cc_of[id(n)]
@@ -317,6 +354,7 @@ def write_outputs(outdir, working, meta):
     stats = dict(meta)
     stats.update({
         "working_xray": len(xray_pub),
+        "working_app": len(app_pub),
         "sea_working": {"total": sea_total,
                         "by_country": dict(sorted(countries.items(),
                                                   key=lambda kv: -kv[1]))},
@@ -403,7 +441,8 @@ def main():
                                             "fast_lt100ms", "median_proxy_ms")},
                      indent=1))
     print(f"DONE in {meta['elapsed_s']}s -> {args.out}/working.txt, working.b64, "
-          f"working_xray.txt, working_xray.b64, stats.json, history.csv")
+          f"working_xray.txt, working_xray.b64, working_app.txt, "
+          f"working_app.b64, stats.json, history.csv")
 
 if __name__ == "__main__":
     main()
