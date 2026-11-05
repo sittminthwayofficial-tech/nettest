@@ -1,11 +1,11 @@
 {
- "timestamp": "2026-11-05T04:14:02Z",
- "harvested": 38783,
- "unique": 28654,
- "valid": 27456,
- "tcp_ok": 12227,
+ "timestamp": "2026-11-05T08:09:54Z",
+ "harvested": 38746,
+ "unique": 28658,
+ "valid": 27467,
+ "tcp_ok": 12214,
  "core_tested": 800,
- "working": 210,
+ "working": 169,
  "fast_lt100ms": 63,
  "sources": [
   {
@@ -20,8 +20,8 @@
    "prio": 1,
    "name": "nyeinkokoaung404/V2ray-Configs",
    "url": "https://raw.githubusercontent.com/nyeinkokoaung404/V2ray-Configs/main/configs/proxy_configs_tested.txt",
-   "links": 228,
-   "kept_unique": 143,
+   "links": 194,
+   "kept_unique": 129,
    "error": ""
   },
   {
@@ -29,7 +29,7 @@
    "name": "sorenadev-dev/v2rayCollector",
    "url": "https://raw.githubusercontent.com/sorenadev-dev/v2rayCollector/refs/heads/main/sub/tcp-cloudzy.txt",
    "links": 3666,
-   "kept_unique": 3616,
+   "kept_unique": 3618,
    "error": ""
   },
   {
@@ -37,7 +37,7 @@
    "name": "Alirewa/V2ray-Configs",
    "url": "https://raw.githubusercontent.com/Alirewa/V2ray-Configs/main/config.txt",
    "links": 2000,
-   "kept_unique": 1665,
+   "kept_unique": 1668,
    "error": ""
   },
   {
@@ -45,7 +45,7 @@
    "name": "v2nodes/sg",
    "url": "https://www.v2nodes.com/subscriptions/country/sg/?key=693C42C2E9D061E",
    "links": 25,
-   "kept_unique": 6,
+   "kept_unique": 5,
    "error": ""
   },
   {
@@ -69,7 +69,7 @@
    "name": "v2nodes/hk",
    "url": "https://www.v2nodes.com/subscriptions/country/hk/?key=693C42C2E9D061E",
    "links": 25,
-   "kept_unique": 7,
+   "kept_unique": 8,
    "error": ""
   },
   {
@@ -77,7 +77,7 @@
    "name": "v2nodes/jp",
    "url": "https://www.v2nodes.com/subscriptions/country/jp/?key=693C42C2E9D061E",
    "links": 25,
-   "kept_unique": 6,
+   "kept_unique": 8,
    "error": ""
   },
   {
@@ -85,7 +85,7 @@
    "name": "v2nodes/all",
    "url": "https://www.v2nodes.com/subscriptions/country/all/?key=693C42C2E9D061E",
    "links": 25,
-   "kept_unique": 7,
+   "kept_unique": 5,
    "error": ""
   },
   {
@@ -101,7 +101,7 @@
    "name": "sub.shadowsharing.com",
    "url": "https://sub.shadowsharing.com/static/sub_en",
    "links": 20,
-   "kept_unique": 13,
+   "kept_unique": 15,
    "error": ""
   },
   {
@@ -109,7 +109,7 @@
    "name": "kort0881/vpn-vless-configs-russia",
    "url": "https://raw.githubusercontent.com/kort0881/vpn-vless-configs-russia/main/output/vless.txt",
    "links": 14491,
-   "kept_unique": 12369,
+   "kept_unique": 12367,
    "error": ""
   },
   {
@@ -117,23 +117,23 @@
    "name": "mahdibland/V2RayAggregator",
    "url": "https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt",
    "links": 4533,
-   "kept_unique": 2629,
+   "kept_unique": 2627,
    "error": ""
   },
   {
    "prio": 14,
    "name": "MatinGhanbari/v2ray-configs",
    "url": "https://raw.githubusercontent.com/MatinGhanbari/v2ray-configs/main/subscriptions/v2ray/all_sub.txt",
-   "links": 3974,
-   "kept_unique": 1390,
+   "links": 3973,
+   "kept_unique": 1380,
    "error": ""
   },
   {
    "prio": 15,
    "name": "Pawdroid/Free-servers",
    "url": "https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub",
-   "links": 10,
-   "kept_unique": 3,
+   "links": 9,
+   "kept_unique": 2,
    "error": ""
   },
   {
@@ -141,7 +141,7 @@
    "name": "nyeinkokoaung404/V2ray-Configs",
    "url": "https://raw.githubusercontent.com/nyeinkokoaung404/V2ray-Configs/main/Sub1.txt",
    "links": 580,
-   "kept_unique": 194,
+   "kept_unique": 224,
    "error": ""
   },
   {
@@ -149,7 +149,7 @@
    "name": "Au1rxx/free-vpn-subscriptions",
    "url": "https://github.com/Au1rxx/free-vpn-subscriptions/raw/main/output/v2ray-base64.txt",
    "links": 1751,
-   "kept_unique": 220,
+   "kept_unique": 221,
    "error": ""
   },
   {
@@ -165,7 +165,7 @@
    "name": "tg/v2nodes",
    "url": "https://t.me/s/v2nodes",
    "links": 20,
-   "kept_unique": 3,
+   "kept_unique": 4,
    "error": ""
   },
   {
@@ -173,15 +173,15 @@
    "name": "tg/PrivateVPNs",
    "url": "https://t.me/s/PrivateVPNs",
    "links": 14,
-   "kept_unique": 12,
+   "kept_unique": 10,
    "error": ""
   },
   {
    "prio": 21,
    "name": "tg/abc_vpn_configs",
    "url": "https://t.me/s/abc_vpn_configs",
-   "links": 19,
-   "kept_unique": 9,
+   "links": 18,
+   "kept_unique": 5,
    "error": ""
   },
   {
@@ -193,127 +193,127 @@
    "error": ""
   }
  ],
- "elapsed_s": 1245.6,
+ "elapsed_s": 1285.7,
+ "working_xray": 169,
+ "working_app": 168,
  "sea_working": {
-  "total": 26,
+  "total": 20,
   "by_country": {
-   "US": 45,
-   "NL": 34,
-   "CA": 13,
+   "NL": 36,
+   "US": 31,
    "DE": 12,
-   "SG": 10,
-   "IT": 9,
-   "JP": 7,
-   "HK": 7,
+   "CA": 8,
+   "IT": 8,
+   "SG": 8,
    "FR": 6,
-   "RU": 5,
-   "PL": 5,
-   "GB": 4,
-   "ES": 4,
+   "GB": 6,
+   "JP": 6,
+   "HK": 6,
+   "PL": 4,
+   "KR": 4,
    "CH": 4,
    "AE": 3,
-   "SE": 3,
-   "IN": 2,
-   "KR": 2,
-   "KZ": 2,
-   "TW": 1,
+   "ES": 3,
+   "RU": 2,
+   "SE": 1,
    "AU": 1,
-   "MY": 1,
-   "PH": 1,
-   "TR": 1
+   "TW": 1,
+   "TR": 1,
+   "KZ": 1,
+   "IN": 1
   }
  },
- "median_proxy_ms": 701.6,
+ "median_proxy_ms": 876.3,
  "top10": [
   {
    "protocol": "ss",
-   "name": "🇺🇸",
+   "name": "001 · 🇺🇸 United States · SS",
    "country": "US",
-   "proxy_ms": 137.4,
-   "mbps": 58.05,
+   "proxy_ms": 124.4,
+   "mbps": 66.75,
+   "score": 91.9,
+   "source": "peasoft/NoMoreWalls"
+  },
+  {
+   "protocol": "vless",
+   "name": "002 · 🇺🇸 United States · VLESS",
+   "country": "US",
+   "proxy_ms": 136.0,
+   "mbps": 32.41,
    "score": 91.6,
    "source": "nyeinkokoaung404/V2ray-Configs"
   },
   {
    "protocol": "ss",
-   "name": "🇺🇸",
-   "country": "US",
-   "proxy_ms": 143.1,
-   "mbps": 0,
-   "score": 91.4,
-   "source": "nyeinkokoaung404/V2ray-Configs"
-  },
-  {
-   "protocol": "ss",
-   "name": "🇺🇸",
-   "country": "US",
-   "proxy_ms": 153.8,
-   "mbps": 52.64,
+   "name": "003 · 🇪🇸 Spain · SS",
+   "country": "ES",
+   "proxy_ms": 152.3,
+   "mbps": 27.58,
    "score": 91.2,
    "source": "nyeinkokoaung404/V2ray-Configs"
   },
   {
    "protocol": "ss",
-   "name": "🇺🇸US-156.146.38.169-0194",
+   "name": "004 · 🇺🇸 United States · SS",
    "country": "US",
-   "proxy_ms": 162.0,
-   "mbps": 0,
-   "score": 91.0,
-   "source": "sorenadev-dev/v2rayCollector"
+   "proxy_ms": 165.6,
+   "mbps": 50.88,
+   "score": 90.9,
+   "source": "nyeinkokoaung404/V2ray-Configs"
   },
   {
-   "protocol": "trojan",
-   "name": "🇺🇸",
+   "protocol": "ss",
+   "name": "005 · 🇺🇸 United States · SS",
    "country": "US",
-   "proxy_ms": 172.2,
-   "mbps": 14.31,
+   "proxy_ms": 173.3,
+   "mbps": 0,
    "score": 90.7,
    "source": "nyeinkokoaung404/V2ray-Configs"
   },
   {
-   "protocol": "ss",
-   "name": "🇺🇸US-156.146.38.167-0196",
+   "protocol": "trojan",
+   "name": "006 · 🇺🇸 United States · TROJAN",
    "country": "US",
-   "proxy_ms": 177.0,
+   "proxy_ms": 219.5,
+   "mbps": 32.96,
+   "score": 89.5,
+   "source": "nyeinkokoaung404/V2ray-Configs"
+  },
+  {
+   "protocol": "trojan",
+   "name": "007 · 🇺🇸 United States · TROJAN",
+   "country": "US",
+   "proxy_ms": 239.8,
+   "mbps": 36.92,
+   "score": 89.0,
+   "source": "nyeinkokoaung404/V2ray-Configs"
+  },
+  {
+   "protocol": "trojan",
+   "name": "008 · 🇺🇸 United States · TROJAN",
+   "country": "US",
+   "proxy_ms": 252.2,
    "mbps": 0,
-   "score": 90.6,
-   "source": "sorenadev-dev/v2rayCollector"
-  },
-  {
-   "protocol": "ss",
-   "name": "🇺🇸US-156.146.38.170-0195",
-   "country": "US",
-   "proxy_ms": 182.3,
-   "mbps": 32.66,
-   "score": 90.4,
-   "source": "sorenadev-dev/v2rayCollector"
-  },
-  {
-   "protocol": "ss",
-   "name": "🇺🇸",
-   "country": "US",
-   "proxy_ms": 193.3,
-   "mbps": 36.99,
-   "score": 90.2,
+   "score": 88.7,
    "source": "nyeinkokoaung404/V2ray-Configs"
   },
   {
-   "protocol": "ss",
-   "name": "🇺🇸",
-   "country": "US",
-   "proxy_ms": 194.4,
-   "mbps": 23.21,
-   "score": 90.1,
-   "source": "nyeinkokoaung404/V2ray-Configs"
+   "protocol": "vless",
+   "name": "009 · 🇬🇧 United Kingdom · VLESS",
+   "country": "GB",
+   "proxy_ms": 266.4,
+   "mbps": 22.76,
+   "score": 88.3,
+   "source": "peasoft/NoMoreWalls"
   },
   {
-   "protocol": "vmess",
-   "name": "🇺🇸 3 - US - VMess - 18000",
+   "protocol": "trojan",
+   "name": "010 · 🇺🇸 United States · TROJAN",
    "country": "US",
-   "proxy_ms": 200.8,
-   "mbps": 17.19,
-   "score": 90.0,
-   "source": "nyeinkokoaung404/V2ray-Configs"
+   "proxy_ms": 325.0,
+   "mbps": 22.24,
+   "score": 86.9,
+   "source": "peasoft/NoMoreWalls"
   }
  ]
 }
